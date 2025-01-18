@@ -20,7 +20,37 @@ This tool is ideal for quickly creating GIFs from image sequences while offering
 
 For support contact me at discord: raccon_aaas
 
+
+
+
+
+
+
+
+
+
+Set-Up TUTORIAL: https://drive.google.com/drive/folders/1GtwTK0cG0QHD3M_3vk4R1LALvf4N7fqv?usp=sharing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 The windows can give you an error/warning that he is protecting your pc, even though the code is safe.
+
 Here is the code: 
 import os
 import tkinter as tk
