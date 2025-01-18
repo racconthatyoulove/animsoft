@@ -1,0 +1,18 @@
+This Python script is a GIF Creator with a user-friendly graphical interface built using Tkinter. It allows users to create GIFs from sequentially named images in a selected folder. The program features:
+
+    Folder Selection:
+        A "Browse" button enables users to select a folder containing the images.
+
+    Frame Rate Customization:
+        Users can specify the desired frames per second (FPS), controlling the speed of the resulting GIF.
+
+    Image Handling:
+        Images are sorted numerically by filename, resized to match the dimensions of the first image, and combined into a GIF.
+
+    Error Handling:
+        The program displays error messages for invalid inputs, such as empty folders, missing images, or non-positive FPS values.
+
+    Output:
+        The GIF is saved as output.gif in the same folder as the images, with a success notification shown upon completion.
+
+This tool is ideal for quickly creating GIFs from image sequences while offering flexibility in frame rate and ensuring uniform image sizes.
