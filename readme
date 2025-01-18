@@ -7,7 +7,7 @@ This Python script is a GIF Creator with a user-friendly graphical interface bui
         Users can specify the desired frames per second (FPS), controlling the speed of the resulting GIF.
 
     Image Handling:
-        Images are sorted numerically by filename, resized to match the dimensions of the first image, and combined into a GIF.
+        Images are sorted numerically by filename (from 1 to any higher number), resized to match the dimensions of the first image, and combined into a GIF.
 
     Error Handling:
         The program displays error messages for invalid inputs, such as empty folders, missing images, or non-positive FPS values.
