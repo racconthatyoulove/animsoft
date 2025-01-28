@@ -1,17 +1,92 @@
-File too big for github, download version 1.0 here instead
+Use vscode or something similar:
 
 
 
-https://drive.google.com/drive/folders/1Vh-aCk0vaN1OZxs_Ctl30L6KmTda9Wps?usp=drive_link
 
+import os
+import tkinter as tk
+from tkinter import filedialog, messagebox
+from PIL import Image, ImageSequence
 
+def create_gif(folder_path, fps, output_filename):
+	try:
+    	# Get all image files in the folder, sorted numerically
+    	images = sorted(
+        	[f for f in os.listdir(folder_path) if f.lower().endswith(('png', 'jpg', 'jpeg'))],
+        	key=lambda x: int(os.path.splitext(x)[0])
+    	)
+    	if not images:
+        	raise ValueError("No valid images found in the folder.")
 
-For setup, here is an video:
+    	# Open all images and ensure sizes match
+    	frames = [Image.open(os.path.join(folder_path, img)).convert("RGBA") for img in images]
+    	base_size = frames[0].size  # Use the size of the first image as reference
+    	frames = [frame.resize(base_size) for frame in frames]
 
+    	# Create a new blank canvas for each frame to prevent blending
+    	cleaned_frames = []
+    	for frame in frames:
+        	canvas = Image.new("RGBA", base_size, (255, 255, 255, 0))  # Transparent canvas
+        	canvas.paste(frame, (0, 0))  # Paste frame onto the canvas
+        	cleaned_frames.append(canvas)
 
+    	# Set duration based on FPS
+    	duration = int(1000 / fps)  # Duration in milliseconds
 
-https://drive.google.com/drive/folders/1GtwTK0cG0QHD3M_3vk4R1LALvf4N7fqv?usp=sharing
+    	# Save the GIF with disposal method
+    	output_path = os.path.join(folder_path, output_filename)
+    	cleaned_frames[0].save(
+        	output_path,
+        	save_all=True,
+        	append_images=cleaned_frames[1:],  # Add subsequent frames
+        	duration=duration,
+        	loop=0,  # Infinite looping
+        	disposal=2  # Clear frame before drawing the next
+    	)
+    	messagebox.showinfo("Success", f"GIF created successfully!\nSaved at: {output_path}")
+	except Exception as e:
+    	messagebox.showerror("Error", str(e))
 
+def browse_folder():
+	folder_path = filedialog.askdirectory()
+	if folder_path:
+    	entry_folder.delete(0, tk.END)
+    	entry_folder.insert(0, folder_path)
 
+def generate_gif():
+	folder_path = entry_folder.get()
+	try:
+    	fps = int(entry_fps.get())
+    	if fps <= 0:
+        	raise ValueError("FPS must be greater than 0.")
+    	output_filename = entry_filename.get()
+    	if not output_filename.endswith(".gif"):
+        	output_filename += ".gif"
+    	create_gif(folder_path, fps, output_filename)
+	except ValueError as e:
+    	messagebox.showerror("Error", str(e))
 
-Raccon, 2025
+# GUI setup
+root = tk.Tk()
+root.title("GIF Creator")
+
+# Folder selection
+tk.Label(root, text="Folder Path:").grid(row=0, column=0, padx=10, pady=5, sticky="e")
+entry_folder = tk.Entry(root, width=40)
+entry_folder.grid(row=0, column=1, padx=10, pady=5)
+tk.Button(root, text="Browse", command=browse_folder).grid(row=0, column=2, padx=10, pady=5)
+
+# FPS input
+tk.Label(root, text="Frames Per Second (FPS):").grid(row=1, column=0, padx=10, pady=5, sticky="e")
+entry_fps = tk.Entry(root, width=10)
+entry_fps.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+
+# Filename input
+tk.Label(root, text="Output Filename:").grid(row=2, column=0, padx=10, pady=5, sticky="e")
+entry_filename = tk.Entry(root, width=40)
+entry_filename.grid(row=2, column=1, padx=10, pady=5)
+
+# Generate button
+tk.Button(root, text="Generate GIF", command=generate_gif).grid(row=3, column=0, columnspan=3, pady=10)
+
+root.mainloop()
